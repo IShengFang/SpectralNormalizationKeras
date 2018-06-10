@@ -2,7 +2,8 @@ Spectral Normalization for Keras
 ================================
 The **simple** Keras implementation of ICLR 2018 paper, [Spectral Normalization for Generative Adversarial Networks](https://openreview.net/forum?id=B1QRgziT-)
 
-![CIFAR10 epoch 118](./generated_img_CIFAR10/icon48.png)
+![](generated_img_CIFAR10/icon48.png "CIFAR10 epoch 118")
+
 How to use?
 ----
 1. Move SpectralNormalizationKeras.py in your dir
