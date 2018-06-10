@@ -11,6 +11,7 @@ from keras.utils.generic_utils import deserialize_keras_object
 from keras.utils.generic_utils import has_arg
 from keras.utils import conv_utils
 from keras.legacy import interfaces
+from keras.layers import Dense, Conv1D, Conv2D, Conv3D
 
 class DenseSN(Dense):
     def _l2normalize(self, v, eps=1e-12):

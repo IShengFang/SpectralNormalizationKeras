@@ -15,4 +15,5 @@ from SpectralNormalizationKeras import DenseSN, ConvSN1D, ConvSN2D, ConvSN3D
 
 Issue
 -----
-1. added Cifar 100 example code.
+1. Projection Discriminator
+2. Compare with SELU and WGAN-GP
