@@ -2,8 +2,8 @@ Spectral Normalization for Keras
 ================================
 The **simple** Keras implementation of ICLR 2018 paper, [Spectral Normalization for Generative Adversarial Networks](https://openreview.net/forum?id=B1QRgziT-)
 
-**CIFAR10 epoch 245**
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/generated_img_CIFAR10/SN_epoch_245.png "CIFAR10 epoch 245")
+**CIFAR10 epoch 245 (DCGAN architecture)**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/generated_img_CIFAR10_DCGAN/SN_epoch_245.png "CIFAR10 epoch 245")
 
 How to use?
 ----
