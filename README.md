@@ -17,7 +17,7 @@ from SpectralNormalizationKeras import DenseSN, ConvSN1D, ConvSN2D, ConvSN3D
 
 Example notebook
 ------
-![CIFAR10 with DCGAN architecture](http://nbviewer.jupyter.org/github/ishengfang/SpectralNormalizationKeras/blob/master/CIFAR10%28DCGAN%20Structure%29.ipynb)
+[CIFAR10 with DCGAN architecture](http://nbviewer.jupyter.org/github/ishengfang/SpectralNormalizationKeras/blob/master/CIFAR10%28DCGAN%20Structure%29.ipynb)
 
 
 Issue
