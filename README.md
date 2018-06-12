@@ -32,7 +32,7 @@ Model Detail
 #### Generator
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/DCGAN_Generator.png)
 #### Discriminator
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/DCGAN_Generator.png)
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/DCGAN_Discriminator.png)
 ### ResNet GAN
 #### Generator 
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/ResNet_Generator.png)
