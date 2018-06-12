@@ -3,10 +3,12 @@ Spectral Normalization for Keras
 The **simple** Keras implementation of ICLR 2018 paper, [Spectral Normalization for Generative Adversarial Networks](https://openreview.net/forum?id=B1QRgziT-)
 
 **CIFAR10 epoch 245 (ResNet architecture)**
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/generated_img_CIFAR10_ResNet/SN_epoch_245.png)
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_ResNet/SN_epoch_245.png)
 
 **CIFAR10 epoch 245 (DCGAN architecture)**
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/generated_img_CIFAR10_DCGAN/SN_epoch_245.png)
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_DCGAN/SN_epoch_245.png)
 
 How to use?
 ----
@@ -37,7 +39,7 @@ Model Detail
 ##### Generator UpSampling ResBlock
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/Generator_resblock_1.png)
 #### Dicriminator
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/ResNet_Dicriminator.png)
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/ResNet_Discriminator.png)
 ##### Discriminator DownSampling ResBlock
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/model/Discriminator_resblock_Down_1.png)
 ##### Discriminator ResBlock
