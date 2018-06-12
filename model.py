@@ -1,4 +1,4 @@
-from keras.layers import Input, Dense, Conv2D, Add, Dot, Conv2DTranspose, Activation, Reshape,BatchNormalization,UpSampling2D,AveragePooling2D, GlobalAveragePooling2D
+from keras.layers import Input, Dense, Conv2D, Add, Dot, Conv2DTranspose, Activation, Reshape,BatchNormalization,UpSampling2D,AveragePooling2D, GlobalAveragePooling2D, LeakyReLU, Reshape, Flatten
 from keras.models import Model, Sequential
 import keras.backend as K
 from keras.utils import plot_model
@@ -8,7 +8,7 @@ def ResBlock(input_shape, sampling=None, trainable_sortcut=True,
              spectral_normalization=False, batch_normalization=True,
              bn_momentum=0.9, bn_epsilon=0.00002,
              channels=256, k_size=3, summary=False,
-             plot=False, plot_name='res_block.png', name=None):
+             plot=False, name=None):
     '''
     ResBlock(input_shape, sampling=None, trainable_sortcut=True, 
              spectral_normalization=False, batch_normalization=True,
@@ -79,13 +79,14 @@ def ResBlock(input_shape, sampling=None, trainable_sortcut=True,
     res_block = Model(res_block_input, res_block_add, name=name)
     
     if plot:
-        plot_model(res_block, plot_name, show_layer_names=False)
+        plot_model(res_block, name+'.png', show_layer_names=False)
     if summary:
+        print(name)
         res_block.summary()
     
     return res_block
     
-def BuildGenerator(summary=True, resnet=True, bn_momentum=0.9, bn_epsilon=0.00002, name='Generator'):
+def BuildGenerator(summary=True, resnet=True, bn_momentum=0.9, bn_epsilon=0.00002, name='Generator', plot=False):
     if resnet:
         model_input = Input(shape=(128,))
         h           = Dense(4*4*256, kernel_initializer='glorot_uniform')(model_input)
@@ -106,18 +107,21 @@ def BuildGenerator(summary=True, resnet=True, bn_momentum=0.9, bn_epsilon=0.0000
         model.add(Dense(4*4*512, kernel_initializer='glorot_uniform' , input_dim=128))
         model.add(Reshape((4,4,512)))
         model.add(Conv2DTranspose(256, kernel_size=4, strides=2, padding='same', activation='relu',kernel_initializer='glorot_uniform'))
-        model.add(BatchNormalization(epsilon=bn_epsilon, bn_momentum=bn_momentum))
+        model.add(BatchNormalization(epsilon=bn_epsilon, momentum=bn_momentum))
         model.add(Conv2DTranspose(128, kernel_size=4, strides=2, padding='same', activation='relu',kernel_initializer='glorot_uniform'))
-        model.add(BatchNormalization(epsilon=bn_epsilon, bn_momentum=bn_momentum))
+        model.add(BatchNormalization(epsilon=bn_epsilon, momentum=bn_momentum))
         model.add(Conv2DTranspose(64,  kernel_size=4, strides=2, padding='same', activation='relu',kernel_initializer='glorot_uniform'))
-        model.add(BatchNormalization(epsilon=bn_epsilon, bn_momentum=bn_momentum))
+        model.add(BatchNormalization(epsilon=bn_epsilon, momentum=bn_momentum))
         model.add(Conv2DTranspose(3,   kernel_size=3, strides=1, padding='same', activation='tanh'))
+        
+    if plot:
+        plot_model(model, name+'.png', show_layer_names=True)
     if summary:
         print("Generator")
         model.summary()
     return model
 
-def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normalization=False, bn_momentum=0.9, bn_epsilon=0.00002, resnet=True, name='Discriminator'):
+def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normalization=False, bn_momentum=0.9, bn_epsilon=0.00002, resnet=True, name='Discriminator', plot=False):
     if resnet:
         model_input = Input(shape=(32,32,3))
         resblock_1  = ResBlock(input_shape=(32,32,3), channels=128, sampling='down', batch_normalization=False, spectral_normalization=True, name='Discriminator_resblock_Down_1')
@@ -171,6 +175,9 @@ def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normaliz
             model.add(LeakyReLU(0.1))
             model.add(Flatten())
             model.add(Dense(1,kernel_initializer='glorot_uniform'))
+    if plot:
+        plot_model(model, name+'.png', show_layer_names=True)
+        
     if summary:
         print('Discriminator')
         print('Spectral Normalization: {}'.format(spectral_normalization))
