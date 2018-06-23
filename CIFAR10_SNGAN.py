@@ -21,15 +21,15 @@ if K.backend() == 'tensorflow':
 BATCHSIZE=64
 LEARNING_RATE = 0.0002
 TRAINING_RATIO = 1
-BETA_1 = 0.5
+BETA_1 = 0.0
 BETA_2 = 0.9
-EPOCHS = 300
+EPOCHS = 500
 BN_MIMENTUM = 0.9
 BN_EPSILON  = 0.00002
-SAVE_DIR = 'img/generated_img_CIFAR10_ResNet/'
-LOSS = 'wasserstein' #Or
-#LOSS = 'binary_crossentropy'
-RESNET = True #False for DCGAN
+SAVE_DIR = 'img/BXE/'
+#LOSS = 'wasserstein' #Or
+LOSS = 'binary_crossentropy'
+RESNET = False #for DCGAN
 PLOT_MODEL = False
 SUMMARY = True
 
@@ -69,7 +69,7 @@ model_for_training_discriminator       = Model([Real_image,
                                                 Discriminator_output_for_fake])
 generator.trainable = False
 discriminator.trainable = True
-model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[wasserstein_loss, wasserstein_loss])
+model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[LOSS, LOSS])
 if SUMMARY:
     print("model_for_training_discriminator")
     model_for_training_discriminator.summary()
@@ -84,7 +84,7 @@ X = X/255*2-1
 # Make Label for traing
 real_y = np.ones((BATCHSIZE, 1), dtype=np.float32)
 if LOSS == 'binary_crossentropy':
-    fake_y = np.zero((BATCHSIZE, 1), dtype=np.float32)
+    fake_y = np.zeros((BATCHSIZE, 1), dtype=np.float32)
 else:
     fake_y = -real_y
 
@@ -120,14 +120,19 @@ for epoch in range(EPOCHS):
         generator_loss.append(model_for_training_generator.train_on_batch(np.random.randn(BATCHSIZE, 128), real_y))
     
     print('\nepoch time: {}'.format(time()-start_time))
-    
-    W_real = model_for_training_generator.evaluate(test_noise, real_y)
-    print(W_real)
-    W_fake = model_for_training_generator.evaluate(test_noise, fake_y)
-    print(W_fake)
-    W_l = W_real+W_fake
-    print('wasserstein_loss: {}'.format(W_l))
-    W_loss.append(W_l)
+    if LOSS == 'binary_crossentropy':
+        g_epoch_test_loss = model_for_training_generator.evaluate(test_noise,real_y)
+        print('generator_loss:      {}'.format(g_epoch_test_loss))
+        d_epoch_test_loss = model_for_training_discriminator.evaluate([X[:GENERATE_BATCHSIZE], test_noise], [real_y, fake_y])
+        print('discriminator_loss: {}'.format(d_epoch_test_loss))
+    else:
+        W_real = model_for_training_generator.evaluate(test_noise, real_y)
+        print(W_real)
+        W_fake = model_for_training_generator.evaluate(test_noise, fake_y)
+        print(W_fake)
+        W_l = W_real+W_fake
+        print('wasserstein_loss: {}'.format(W_l))
+        W_loss.append(W_l)
     #Generate image
     generated_image = generator.predict(test_noise)
     generated_image = (generated_image+1)/2
