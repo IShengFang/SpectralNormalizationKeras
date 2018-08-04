@@ -11,7 +11,7 @@ from keras.utils.generic_utils import deserialize_keras_object
 from keras.utils.generic_utils import has_arg
 from keras.utils import conv_utils
 from keras.legacy import interfaces
-from keras.layers import Dense, Conv1D, Conv2D, Conv3D
+from keras.layers import Dense, Conv1D, Conv2D, Conv3D, Embedding
 
 class DenseSN(Dense):
     def _l2normalize(self, v, eps=1e-12):
@@ -428,3 +428,112 @@ class ConvSN3D(Conv3D):
         self.input_spec = InputSpec(ndim=self.rank + 2,
                                     axes={channel_axis: input_dim})
         self.built = True
+
+        
+class EmbeddingSN(Embedding):
+    
+    def _l2normalize(self, v, eps=1e-12):
+        return v / (K.sum(v ** 2) ** 0.5 + eps)
+    
+    def power_iteration(self, u, W):
+        '''
+        Accroding the paper, we only need to do power iteration one time.
+        '''
+        v = self._l2normalize(K.dot(u, K.transpose(W)))
+        u = self._l2normalize(K.dot(v, W))
+        return u, v
+
+    def build(self, input_shape):
+        self.embeddings = self.add_weight(
+            shape=(self.input_dim, self.output_dim),
+            initializer=self.embeddings_initializer,
+            name='embeddings',
+            regularizer=self.embeddings_regularizer,
+            constraint=self.embeddings_constraint,
+            dtype=self.dtype)
+        
+        #Spectral Normalization
+        #Get kernel tensor shape
+        W_shape = self.embeddings.shape.as_list()
+        #Flatten the Tensor
+        W_reshaped = K.reshape(self.embeddings, [-1, W_shape[-1]])
+        #initialize u vector
+        u = K.random_normal_variable([1, W_shape[-1]], 0 ,1)
+
+        u,v = self.power_iteration(u, W_reshaped)
+        #Calculate Sigma
+        sigma=K.dot(v, W_reshaped)
+        sigma=K.dot(sigma, K.transpose(u))
+        #normalize it
+        W_bar = W_reshaped / sigma
+        #reshape weight tensor
+        W_bar = K.reshape(W_bar, W_shape)
+        #update weitht
+        self.embeddings = W_bar
+        
+        self.built = True
+
+class ConvSN2DTranspose(Conv2DTranspose):
+    def _l2normalize(self, v, eps=1e-12):
+        return v / (K.sum(v ** 2) ** 0.5 + eps)
+    
+    def power_iteration(self, u, W):
+        '''
+        Accroding the paper, we only need to do power iteration one time.
+        '''
+        v = self._l2normalize(K.dot(u, K.transpose(W)))
+        u = self._l2normalize(K.dot(v, W))
+        return u, v
+    
+    def build(self, input_shape):
+        if len(input_shape) != 4:
+            raise ValueError('Inputs should have rank ' +
+                             str(4) +
+                             '; Received input shape:', str(input_shape))
+        if self.data_format == 'channels_first':
+            channel_axis = 1
+        else:
+            channel_axis = -1
+        if input_shape[channel_axis] is None:
+            raise ValueError('The channel dimension of the inputs '
+                             'should be defined. Found `None`.')
+        input_dim = input_shape[channel_axis]
+        kernel_shape = self.kernel_size + (self.filters, input_dim)
+
+        self.kernel = self.add_weight(shape=kernel_shape,
+                                      initializer=self.kernel_initializer,
+                                      name='kernel',
+                                      regularizer=self.kernel_regularizer,
+                                      constraint=self.kernel_constraint)
+        if self.use_bias:
+            self.bias = self.add_weight(shape=(self.filters,),
+                                        initializer=self.bias_initializer,
+                                        name='bias',
+                                        regularizer=self.bias_regularizer,
+                                        constraint=self.bias_constraint)
+        else:
+            self.bias = None
+            
+        #Spectral Normalization
+        #Get kernel tensor shape
+        W_shape = self.kernel.shape.as_list()
+        #Flatten the Tensor
+        W_reshaped = K.reshape(self.kernel, [-1, W_shape[-1]])
+        #initialize u vector
+        u = K.random_normal_variable([1, W_shape[-1]], 0 ,1)
+
+        u,v = self.power_iteration(u, W_reshaped)
+        #Calculate Sigma
+        sigma=K.dot(v, W_reshaped)
+        sigma=K.dot(sigma, K.transpose(u))
+        #normalize it
+        W_bar = W_reshaped / sigma
+        #reshape weight tensor
+        W_bar = K.reshape(W_bar, W_shape)
+        #update weitht
+        self.kernel = W_bar
+        
+        # Set input spec.
+        self.input_spec = InputSpec(ndim=4, axes={channel_axis: input_dim})
+        self.built = True  
+    
