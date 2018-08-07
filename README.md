@@ -107,5 +107,9 @@ Model Detail
 
 Issue
 -----
-1. Compare with SELU and WGAN-GP
-2. Projection Discriminator
+- [x] Compare with WGAN-GP
+- [ ] Projection Discriminator
+
+Acknowledgment
+-----
+- Thank @anshkapil pointed out and @IFeelBloated corrected this implementation.
