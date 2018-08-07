@@ -10,23 +10,29 @@ Result
 ##### with Spectral Normalization
 
 **100 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_099.png)
 
 **200 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_199.png)
 
 **300 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_299.png)
 
 ##### with Gradeint Penalty
 
 **100 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_099.png)
 
 **200 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_199.png)
 
 **300 epoch**
+
 ![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_299.png)
 
 
