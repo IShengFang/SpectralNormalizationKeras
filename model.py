@@ -3,6 +3,39 @@ from keras.models import Model, Sequential
 import keras.backend as K
 from keras.utils import plot_model
 from SpectralNormalizationKeras import DenseSN, ConvSN2D
+from keras.layers.pooling import _GlobalPooling2D
+
+class GlobalSumPooling2D(_GlobalPooling2D):
+    """Global sum pooling operation for spatial data.
+    # Arguments
+        data_format: A string,
+            one of `channels_last` (default) or `channels_first`.
+            The ordering of the dimensions in the inputs.
+            `channels_last` corresponds to inputs with shape
+            `(batch, height, width, channels)` while `channels_first`
+            corresponds to inputs with shape
+            `(batch, channels, height, width)`.
+            It defaults to the `image_data_format` value found in your
+            Keras config file at `~/.keras/keras.json`.
+            If you never set it, then it will be "channels_last".
+    # Input shape
+        - If `data_format='channels_last'`:
+            4D tensor with shape:
+            `(batch_size, rows, cols, channels)`
+        - If `data_format='channels_first'`:
+            4D tensor with shape:
+            `(batch_size, channels, rows, cols)`
+    # Output shape
+        2D tensor with shape:
+        `(batch_size, channels)`
+    """
+
+    def call(self, inputs):
+        if self.data_format == 'channels_last':
+            return K.sum(inputs, axis=[1, 2])
+        else:
+            return K.sum(inputs, axis=[2, 3])
+
 
 def ResBlock(input_shape, sampling=None, trainable_sortcut=True, 
              spectral_normalization=False, batch_normalization=True,
@@ -124,16 +157,16 @@ def BuildGenerator(summary=True, resnet=True, bn_momentum=0.9, bn_epsilon=0.0000
 def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normalization=False, bn_momentum=0.9, bn_epsilon=0.00002, resnet=True, name='Discriminator', plot=False):
     if resnet:
         model_input = Input(shape=(32,32,3))
-        resblock_1  = ResBlock(input_shape=(32,32,3), channels=128, sampling='down', batch_normalization=False, spectral_normalization=True, name='Discriminator_resblock_Down_1')
+        resblock_1  = ResBlock(input_shape=(32,32,3), channels=128, sampling='down', batch_normalization=True, spectral_normalization=spectral_normalization, name='Discriminator_resblock_Down_1')
         h           = resblock_1(model_input)
-        resblock_2  = ResBlock(input_shape=(16,16,128),channels=128, sampling='down', batch_normalization=False, spectral_normalization=True, name='Discriminator_resblock_Down_2')
+        resblock_2  = ResBlock(input_shape=(16,16,128),channels=128, sampling='down', batch_normalization=True, spectral_normalization=spectral_normalization, name='Discriminator_resblock_Down_2')
         h           = resblock_2(h)
-        resblock_3  = ResBlock(input_shape=(8,8,128),channels=128 , sampling=None, batch_normalization=False, spectral_normalization=True, name='Discriminator_resblock_1' )
+        resblock_3  = ResBlock(input_shape=(8,8,128),channels=128 , sampling=None, batch_normalization=True, spectral_normalization=spectral_normalization, trainable_sortcut=False, name='Discriminator_resblock_1' )
         h           = resblock_3(h)
-        resblock_4  = ResBlock(input_shape=(8,8,128),channels=128 , sampling=None, batch_normalization=False, spectral_normalization=True, name='Discriminator_resblock_2' )
+        resblock_4  = ResBlock(input_shape=(8,8,128),channels=128 , sampling=None, batch_normalization=True, spectral_normalization=spectral_normalization, trainable_sortcut=False, name='Discriminator_resblock_2' )
         h           = resblock_4(h)
         h           = Activation('relu')(h)
-        h           = GlobalAveragePooling2D()(h)
+        h           = GlobalSumPooling2D()(h)
         model_output= DenseSN(1,kernel_initializer='glorot_uniform')(h)
 
         model = Model(model_input, model_output, name=name)
@@ -155,7 +188,7 @@ def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normaliz
             model.add(LeakyReLU(0.1))
             model.add(ConvSN2D(512, kernel_size=3, strides=1,kernel_initializer='glorot_uniform', padding='same'))
             model.add(LeakyReLU(0.1))
-            model.add(Flatten())
+            model.add(GlobalSumPooling2D())
             model.add(DenseSN(1,kernel_initializer='glorot_uniform'))
         else:
             model = Sequential(name=name)
@@ -173,7 +206,7 @@ def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normaliz
             model.add(LeakyReLU(0.1))
             model.add(Conv2D(512, kernel_size=3, strides=1,kernel_initializer='glorot_uniform', padding='same'))
             model.add(LeakyReLU(0.1))
-            model.add(Flatten())
+            model.add(GlobalSumPooling2D())
             model.add(Dense(1,kernel_initializer='glorot_uniform'))
     if plot:
         plot_model(model, name+'.png', show_layer_names=True)
@@ -183,3 +216,39 @@ def BuildDiscriminator(summary=True, spectral_normalization=True, batch_normaliz
         print('Spectral Normalization: {}'.format(spectral_normalization))
         model.summary()
     return model
+
+if __name__ == '__main__':
+    print('Plot the model visualization')
+    from keras.utils import plot_model
+    DIR = 'img/model/'
+    
+    print('DCGAN_Generator')
+    model = BuildGenerator(resnet=False)
+    plot_model(model, show_shapes=True, to_file=DIR+'DCGAN_Generator.png')
+    
+    print('ResNet_Generator')
+    model = BuildGenerator(resnet=True)
+    plot_model(model, show_shapes=True, to_file=DIR+'ResNet_Generator.png')
+
+    
+    print('DCGAN_Discriminator')
+    model = BuildDiscriminator(resnet=False)
+    plot_model(model, show_shapes=True, to_file=DIR+'DCGAN_Discriminator.png')
+    
+    print('ResNet_Discriminator')
+    model = BuildDiscriminator(resnet=True)
+    plot_model(model, show_shapes=True, to_file=DIR+'ResNet_Discriminator.png')
+    
+    
+    print('Generator_resblock_1')
+    model = ResBlock(input_shape=(4,4,256), sampling='up',  name='Generator_resblock_1')
+    plot_model(model, show_shapes=True, to_file=DIR+'Generator_resblock_1.png')
+
+    
+    print('Discriminator_resblock_Down_1')
+    model = ResBlock(input_shape=(32,32,3), channels=128, sampling='down', spectral_normalization=True, name='Discriminator_resblock_Down_1')
+    plot_model(model, show_shapes=True, to_file=DIR+'Discriminator_resblock_Down_1.png')
+    
+    print('Discriminator_resblock_1')
+    model = ResBlock(input_shape=(8,8,128),channels=128 , sampling=None, spectral_normalization=True, name='Discriminator_resblock_1' )
+    plot_model(model, show_shapes=True, to_file=DIR+'Discriminator_resblock_1.png')

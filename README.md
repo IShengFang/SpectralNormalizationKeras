@@ -2,13 +2,66 @@ Spectral Normalization for Keras
 ================================
 The **simple** Keras implementation of ICLR 2018 paper, [Spectral Normalization for Generative Adversarial Networks](https://openreview.net/forum?id=B1QRgziT-)
 
-**CIFAR10 epoch 245 (ResNet architecture)**
+Result
+-----------------------------
+### CIFAR10
+#### DCGAN architecture
 
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_ResNet/SN_epoch_245.png)
+##### with Spectral Normalization
 
-**CIFAR10 epoch 245 (DCGAN architecture)**
+**100 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_099.png)
 
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_DCGAN/SN_epoch_245.png)
+**200 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_199.png)
+
+**300 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_299.png)
+
+##### with Gradeint Penalty
+
+**100 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_099.png)
+
+**200 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_199.png)
+
+**300 epoch**
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_299.png)
+
+
+#### ResNet architecture
+
+##### with Spectral Normalization
+
+**epoch 100**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_099.png)
+
+**epoch 200**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_199.png)
+
+
+**epoch 300**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_299.png)
+
+##### with Gradeint Penalty
+
+**epoch 100**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_099.png)
+
+**epoch 200**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_199.png)
+
+**epoch 300**
+
+![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_299.png)
+
+
 
 How to use?
 ----
