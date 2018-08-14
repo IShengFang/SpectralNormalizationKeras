@@ -9,64 +9,29 @@ Result
 
 ##### with Spectral Normalization
 
-**100 epoch**
+|**100 epoch**|**200 epoch**|**300 epoch**|
+|-------------|-------------|-------------|
+|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_299.png)|
 
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_099.png)
-
-**200 epoch**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_199.png)
-
-**300 epoch**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_299.png)
 
 ##### with Gradeint Penalty
-
-**100 epoch**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_099.png)
-
-**200 epoch**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_199.png)
-
-**300 epoch**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_299.png)
-
+|**100 epoch**|**200 epoch**|**300 epoch**|
+|-------------|-------------|-------------|
+|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_299.png)|
 
 #### ResNet architecture
 
 ##### with Spectral Normalization
 
-**epoch 100**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_099.png)
-
-**epoch 200**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_199.png)
-
-
-**epoch 300**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_299.png)
+|**100 epoch**|**200 epoch**|**300 epoch**|
+|-------------|-------------|-------------|
+|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_299.png)|
 
 ##### with Gradeint Penalty
 
-**epoch 100**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_099.png)
-
-**epoch 200**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_199.png)
-
-**epoch 300**
-
-![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_299.png)
-
+|**100 epoch**|**200 epoch**|**300 epoch**|
+|-------------|-------------|-------------|
+|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_299.png)|
 
 
 How to use?
