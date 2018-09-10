@@ -1,38 +1,86 @@
 Spectral Normalization for Keras
 ================================
-The **simple** Keras implementation of ICLR 2018 paper, [Spectral Normalization for Generative Adversarial Networks](https://openreview.net/forum?id=B1QRgziT-)
+The **simple** Keras implementation of ICLR 2018 paper, Spectral Normalization for Generative Adversarial Networks.
+[[openreview]](https://openreview.net/forum?id=B1QRgziT-)[[arixiv]](https://arxiv.org/abs/1802.05957)[[original code(chainer)]](https://github.com/pfnet-research/sngan_projection)
+
+[[Hackmd]](https://hackmd.io/s/BkW34Lje7#)[[github]](https://github.com/IShengFang/SpectralNormalizationKeras)
 
 Result
 -----------------------------
 ### CIFAR10
 #### DCGAN architecture
 
-##### with Spectral Normalization
+| 10epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_009.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_009.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_009.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_009.png)|
 
-|**100 epoch**|**200 epoch**|**300 epoch**|
-|-------------|-------------|-------------|
-|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_with_SN/epoch_299.png)|
+| 100epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_099.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_099.png)|
 
+| 200epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_199.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_199.png)|
 
-##### with Gradeint Penalty
-|**100 epoch**|**200 epoch**|**300 epoch**|
-|-------------|-------------|-------------|
-|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_without_SN/epoch_299.png)|
+| 300epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_299.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_299.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_299.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_299.png)|
+
+| 400epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_399.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_399.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_399.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_399.png)|
+
+| 500epoch | with SN |without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/epoch_499.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/epoch_499.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/epoch_499.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/epoch_499.png)|
+
+| Loss | with SN |without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_GP/loss.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_GP/loss.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_SN_noGP/loss.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_dcgan_noSN_noGP/loss.png)|
 
 #### ResNet architecture
 
-##### with Spectral Normalization
+| 10epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_009.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_009.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_009.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_009.png)|
 
-|**100 epoch**|**200 epoch**|**300 epoch**|
-|-------------|-------------|-------------|
-|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_with_SN/epoch_299.png)|
+| 100epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_099.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_099.png)|
 
-##### with Gradeint Penalty
+| 200epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_199.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_199.png)|
 
-|**100 epoch**|**200 epoch**|**300 epoch**|
-|-------------|-------------|-------------|
-|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_099.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_199.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_without_SN/epoch_299.png)|
+| 300epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_299.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_299.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_299.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_299.png)|
 
+| 400epoch | With SN |Without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_399.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_399.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_399.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_399.png)|
+
+| 500epoch | with SN |without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/epoch_499.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/epoch_499.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/epoch_499.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/epoch_499.png)|
+
+| Loss | with SN |without SN |
+|:-------:|:-------:|:---------:|
+|**With GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_GP/loss.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_GP/loss.png)|
+|**Without GP**|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_SN_noGP/loss.png)|![](https://raw.githubusercontent.com/IShengFang/SpectralNormalizationKeras/master/img/generated_img_CIFAR10_resnet_noSN_noGP/loss.png)|
 
 How to use?
 ----
