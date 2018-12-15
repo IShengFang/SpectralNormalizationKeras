@@ -11,22 +11,25 @@ from model import *
 
 import sys
 import os
+import pickle
 
 
 arg_list = sys.argv
-
+plt.switch_backend('agg') 
 #Hyperperemeter
 BATCHSIZE=64
 LEARNING_RATE = 0.0002
 TRAINING_RATIO = 1
-BETA_1 = 0.5
-BETA_2 = 0.999
-EPOCHS = 300
+BETA_1 = 0.0
+BETA_2 = 0.9
+EPOCHS = 500
 BN_MIMENTUM = 0.9
 BN_EPSILON  = 0.00002
 LEAK = 0.1
-LOSS = 'wasserstein' #Or
+LOSS = 'hinge' #Or
+#LOSS = 'wasserstein' #Or
 #LOSS = 'binary_crossentropy'
+
 if arg_list[1].lower == "dcgan":
     RESNET = False #for DCGAN
 elif arg_list[1].lower == "resnet":
@@ -34,19 +37,23 @@ elif arg_list[1].lower == "resnet":
 else:
     RESNET = True
 
-if arg_list[2].lower == "with":
-    SN = True #for DCGAN
-    GP = False
-elif arg_list[2].lower == "without":
-    SN = False #for DCGAN
+if arg_list[2].lower == "SN":
+    SN = True 
+else:
+    SN = False
+if arg_list[3].lower == "GP":
     GP = True
     from functools import partial
     LAMDA = 10
 else:
-    SN = True
     GP = False
     
-SAVE_DIR = 'img/generated_img_CIFAR10_{}_{}_SN/'.format(arg_list[1], arg_list[2])
+SAVE_DIR = 'img/{}/generated_img_CIFAR10_{}_{}_{}/'.format(LOSS, arg_list[1], arg_list[2], arg_list[3])
+#SAVE_DIR = 'img/generated_img_CIFAR10_{}_fine_b2_09/'.format(arg_list[1])
+
+if not os.path.isdir('img/'+LOSS):
+    print('mkdir {}'.format('img/'+LOSS))
+    os.mkdir('img/'+LOSS)
 
 if not os.path.isdir(SAVE_DIR):
     print('mkdir {}'.format(SAVE_DIR))
@@ -54,7 +61,7 @@ if not os.path.isdir(SAVE_DIR):
 
 PLOT_MODEL = False
 SUMMARY = True
-RESIST_GPU_MEM = False
+RESIST_GPU_MEM = True
 GENERATE_ROW_NUM = 8
 GENERATE_BATCHSIZE = GENERATE_ROW_NUM*GENERATE_ROW_NUM
 
@@ -70,8 +77,28 @@ if RESIST_GPU_MEM:
 # wasserstein_loss
 def wasserstein_loss(y_true, y_pred):
     return K.mean(y_true*y_pred)
+
+def hinge_G_loss(y_true, y_pred):
+    return -K.mean(y_pred)
+
+def hinge_D_real_loss(y_true, y_pred):
+    return K.mean(K.relu(1-y_pred))
+
+def hinge_D_fake_loss(y_true, y_pred):
+    return K.mean(K.relu(1+y_pred))
+
 if LOSS == 'wasserstein':
-    LOSS = wasserstein_loss
+    G_LOSS = wasserstein_loss
+    D_real_LOSS = wasserstein_loss
+    D_fake_LOSS = wasserstein_loss
+elif LOSS == 'binary_crossentropy':
+    G_LOSS = LOSS
+    D_real_LOSS = LOSS
+    D_fake_LOSS = LOSS
+elif LOSS == 'hinge':
+    G_LOSS = hinge_G_loss
+    D_real_LOSS = hinge_D_real_loss
+    D_fake_LOSS = hinge_D_fake_loss
 #Build Model
 generator = BuildGenerator(bn_momentum=BN_MIMENTUM, bn_epsilon=BN_EPSILON, resnet=RESNET, plot=PLOT_MODEL, summary=SUMMARY)
 discriminator = BuildDiscriminator(resnet=RESNET,spectral_normalization=SN, plot=PLOT_MODEL, summary=SUMMARY)
@@ -119,7 +146,7 @@ if GP:
         print("model_for_training_generator")
         model_for_training_generator.summary()
 
-    model_for_training_generator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=LOSS)
+    model_for_training_generator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=G_LOSS)
 
     Real_image                             = Input(shape=(32,32,3))
     Noise_input_for_training_discriminator = Input(shape=(128,))
@@ -136,7 +163,7 @@ if GP:
                                                     Discriminator_output_for_averaged_samples])
     generator.trainable = False
     discriminator.trainable = True
-    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[LOSS, LOSS])
+    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
                       
     if SUMMARY:
         print("model_for_training_discriminator")
@@ -156,7 +183,7 @@ else:
         print("model_for_training_generator")
         model_for_training_generator.summary()
 
-    model_for_training_generator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=LOSS)
+    model_for_training_generator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=G_LOSS)
 
     Real_image                             = Input(shape=(32,32,3))
     Noise_input_for_training_discriminator = Input(shape=(128,))
@@ -170,7 +197,7 @@ else:
                                                     Discriminator_output_for_fake])
     generator.trainable = False
     discriminator.trainable = True
-    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[LOSS, LOSS])
+    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
     if SUMMARY:
         print("model_for_training_discriminator")
         model_for_training_discriminator.summary()
@@ -238,6 +265,16 @@ if GP:
                 old = new
         print('plot generated_image')
         plt.imsave('{}/epoch_{:03}.png'.format(SAVE_DIR, epoch), old)
+        
+        plt.plot(discriminator_loss)
+        plt.plot(generator_loss)
+        plt.legend(['discriminator', 'real_D_loss', 'fake_D_loss', 'GP_Loss', 'generator_loss'])
+        plt.savefig(SAVE_DIR+'/loss.png')
+        plt.clf()
+
+        pickle.dump({'discriminator_loss': discriminator_loss, 
+                     'generator_loss': generator_loss}, 
+                    open(SAVE_DIR+'/loss-history.pkl', 'wb'))
 
 
 else:
@@ -281,3 +318,13 @@ else:
                 old = new
         print('plot generated_image')
         plt.imsave('{}/epoch_{:03}.png'.format(SAVE_DIR, epoch), old)
+        
+        plt.plot(discriminator_loss)
+        plt.plot(generator_loss)
+        plt.legend(['discriminator', 'real_D_loss', 'fake_D_loss', 'generator_loss'])
+        plt.savefig(SAVE_DIR+'/loss.png')
+        plt.clf()
+
+        pickle.dump({'discriminator_loss': discriminator_loss, 
+                     'generator_loss': generator_loss}, 
+                    open(SAVE_DIR+'/loss-history.pkl', 'wb'))
