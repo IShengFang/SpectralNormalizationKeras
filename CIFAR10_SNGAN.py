@@ -49,7 +49,6 @@ else:
     GP = False
     
 SAVE_DIR = 'img/{}/generated_img_CIFAR10_{}_{}_{}/'.format(LOSS, arg_list[1], arg_list[2], arg_list[3])
-#SAVE_DIR = 'img/generated_img_CIFAR10_{}_fine_b2_09/'.format(arg_list[1])
 
 if not os.path.isdir('img/'+LOSS):
     print('mkdir {}'.format('img/'+LOSS))
@@ -163,7 +162,7 @@ if GP:
                                                     Discriminator_output_for_averaged_samples])
     generator.trainable = False
     discriminator.trainable = True
-    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
+    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE*TRAINING_RATIO, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
                       
     if SUMMARY:
         print("model_for_training_discriminator")
@@ -197,7 +196,7 @@ else:
                                                     Discriminator_output_for_fake])
     generator.trainable = False
     discriminator.trainable = True
-    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
+    model_for_training_discriminator.compile(optimizer=Adam(LEARNING_RATE*TRAINING_RATIO, beta_1=BETA_1, beta_2=BETA_2), loss=[D_real_LOSS, D_fake_LOSS])
     if SUMMARY:
         print("model_for_training_discriminator")
         model_for_training_discriminator.summary()
