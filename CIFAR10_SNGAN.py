@@ -133,7 +133,7 @@ if GP:
         Improvements appreciated."""
 
         def _merge_function(self, inputs):
-            weights = K.random_uniform((BATCH_SIZE, 1, 1, 1))
+            weights = K.random_uniform((BATCHSIZE, 1, 1, 1))
             return (weights * inputs[0]) + ((1 - weights) * inputs[1])
     
     Noise_input_for_training_generator = Input(shape=(128,))
@@ -217,7 +217,7 @@ else:
     real_y = -fake_y
 
 if GP:
-    dummy_y = np.zeros((BATCH_SIZE, 1), dtype=np.float32)
+    dummy_y = np.zeros((BATCHSIZE, 1), dtype=np.float32)
                       
 test_noise = np.random.randn(GENERATE_BATCHSIZE, 128)
 
