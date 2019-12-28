@@ -17,7 +17,7 @@ import tensorflow as tf
 class DenseSN(Dense):
     def build(self, input_shape):
         assert len(input_shape) >= 2
-        input_dim = input_shape[-1]
+        input_dim = int(input_shape[-1])
         self.kernel = self.add_weight(shape=(input_dim, self.units),
                                       initializer=self.kernel_initializer,
                                       name='kernel',
@@ -127,7 +127,7 @@ class _ConvSN(Layer):
         if input_shape[channel_axis] is None:
             raise ValueError('The channel dimension of the inputs '
                              'should be defined. Found `None`.')
-        input_dim = input_shape[channel_axis]
+        input_dim = int(input_shape[channel_axis])
         kernel_shape = self.kernel_size + (input_dim, self.filters)
 
         self.kernel = self.add_weight(shape=kernel_shape,
@@ -278,7 +278,7 @@ class ConvSN2D(Conv2D):
         if input_shape[channel_axis] is None:
             raise ValueError('The channel dimension of the inputs '
                              'should be defined. Found `None`.')
-        input_dim = input_shape[channel_axis]
+        input_dim = int(input_shape[channel_axis])
         kernel_shape = self.kernel_size + (input_dim, self.filters)
 
         self.kernel = self.add_weight(shape=kernel_shape,
@@ -357,7 +357,7 @@ class ConvSN1D(Conv1D):
         if input_shape[channel_axis] is None:
             raise ValueError('The channel dimension of the inputs '
                              'should be defined. Found `None`.')
-        input_dim = input_shape[channel_axis]
+        input_dim = int(input_shape[channel_axis])
         kernel_shape = self.kernel_size + (input_dim, self.filters)
 
         self.kernel = self.add_weight(shape=kernel_shape,
@@ -435,7 +435,7 @@ class ConvSN3D(Conv3D):
         if input_shape[channel_axis] is None:
             raise ValueError('The channel dimension of the inputs '
                              'should be defined. Found `None`.')
-        input_dim = input_shape[channel_axis]
+        input_dim = int(input_shape[channel_axis])
         kernel_shape = self.kernel_size + (input_dim, self.filters)
 
         self.kernel = self.add_weight(shape=kernel_shape,
@@ -569,7 +569,7 @@ class ConvSN2DTranspose(Conv2DTranspose):
         if input_shape[channel_axis] is None:
             raise ValueError('The channel dimension of the inputs '
                              'should be defined. Found `None`.')
-        input_dim = input_shape[channel_axis]
+        input_dim = int(input_shape[channel_axis])
         kernel_shape = self.kernel_size + (self.filters, input_dim)
 
         self.kernel = self.add_weight(shape=kernel_shape,
